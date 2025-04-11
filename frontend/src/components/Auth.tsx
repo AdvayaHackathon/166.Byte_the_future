@@ -20,7 +20,6 @@ export const Auth = ({type}: {type: 'signin' | 'signup'}) =>{
             navigate("/blogs");
         } catch(e) {
             console.log(e);
-            
         }
     }
 
