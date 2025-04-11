@@ -1,6 +1,6 @@
 {
-  "name": "@dhruvaprasad001/hackathon",
-  "version": "1.0.0",
+  "name": "@dhruvaprasad001/medium-common",
+  "version": "1.0.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -9,9 +9,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "dependencies": {
-    "@dhruvaprasad001/hackathon": "^1.0.0",
-    "zod": "^3.24.2"
+    "@dhruvaprasad001/medium-common": "^1.0.4",
+    "zod": "^3.24.1"
   }
 }

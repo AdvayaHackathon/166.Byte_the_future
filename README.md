@@ -1,45 +1,31 @@
-# Welcome Byte the future 👋
+# Medium Clone Blog Application
 
-Hello Team **Byte the future** from **Global Academy of Technology**,
+This is a Medium clone application designed for creating, reading, and summarizing blog posts. It is built with modern web technologies and integrates OpenAI's GPT API for generating summaries of blog posts.
 
-Welcome to the Hackathon! We're excited to have you on board and can't wait to see what you'll build under the theme **"Digital solutions for rural education"** 
+## Features
 
-## Team Details
+- User Authentication with JWT
+- Blog post creation, reading, and management
+- Automatic blog post summarization using OpenAI GPT
+- Responsive user interface
+- Seamless backend integration
 
-- **Team Number:** 166  
-- **Team Name:** Byte the future
-- **Team Leader:** Dhruva Prasad  
-- **Email:** dhruvaprasad003@gmail.com  
-- **Phone:** 9591054847  
+## Tech Stack
 
-### Team Members:
-- Diya R 
-- H S Chinmayee 
-- Bhaskar B C 
+The application is built using the following technologies:
 
-## Problem Statement
+### Frontend
+- **React**: For building the user interface
+- **TypeScript**: For type safety and better developer experience
 
-> **Build a lightweight, offline-friendly digital learning platform to provide quality education and per...**
+### Backend
+- **Cloudflare Workers**: For a scalable and serverless backend
+- **Zod**: For validation and type inference
+- **Prisma**: ORM with connection pooling for database interaction
+- **Postgres**: As the database
+- **JWT**: For secure user authentication
 
----
+### Additional Integrations
+- **OpenAI GPT API**: For generating blog post summaries
 
-### Let's Get Started 
 
-This repository has been set up for your hackathon project. Use it to manage your code, collaborate, and share your progress.
-
-**Important Guidelines - Please Read Carefully**
-
-- Do **not** make any commits **before the allotted start date and time**. Early commits may result in getting caught.
-- Commit your work **regularly** to showcase your progress throughout the hackathon.
-
-- Maintain **professionalism and integrity** at all times. Any form of plagiarism or rule-breaking will lead to strict action.
-
-Let's keep it fair, fun, and impactful! 
----
-
-**Good luck, Team Byte the future! Happy coding!**
-
-If you need any support during the hackathon, don't hesitate to reach out to the co-ordinators.
-
-Cheers,  
-_Advaya Hackathon Team_
