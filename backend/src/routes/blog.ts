@@ -194,70 +194,73 @@ blogRouter.delete("/:id" , async (c)=>{
 	}
 })
 
-blogRouter.get('/summarize/:id' ,async (c)=>{
-
+blogRouter.get('/summarize/:id', async (c) => {
 	try {
-		const id = c.req.param("id")
-
-		const OPENAI_API_KEY = c.env.OPENAI_API_KEY
-
-		const prisma = new PrismaClient({
-			datasourceUrl: c.env.DATABASE_URL,
-		}).$extends(withAccelerate())
-
-		const post = await prisma.post.findUnique({
-			where:{
-				id:id
-			},
-			select:{
-				content:true ,
-				summary:true
-			}
-		})
-
-		if(!post){
-			return c.json({ message:" post not found "} , 404)
+	  const id = c.req.param("id");
+	  const OPENAI_API_KEY = c.env.OPENAI_API_KEY;
+  
+	  const prisma = new PrismaClient({
+		datasourceUrl: c.env.DATABASE_URL,
+	  }).$extends(withAccelerate());
+  
+	  const post = await prisma.post.findUnique({
+		where: { id },
+		select: {
+		  content: true,
+		  summary: true
 		}
-
-		if(post.summary){
-			{console.log("from the saved side")}
-			return c.json({summary : post.summary})
-		}
-
-		const content = post.content
-
-		const response = await axios.post(
-			"https://api.openai.com/v1/chat/completions" ,
+	  });
+  
+	  if (!post) {
+		return c.json({ message: "Post not found" }, 404);
+	  }
+  
+	  if (post.summary) {
+		console.log("Returning saved summary");
+		return c.json({ summary: post.summary });
+	  }
+  
+	  const content = post.content;
+  
+	  const response = await axios.post(
+		"https://api.openai.com/v1/chat/completions",
+		{
+		  model: 'gpt-3.5-turbo',
+		  messages: [
 			{
-				model: 'gpt-3.5-turbo',
-				messages: [
-				  { role: 'system', content: 'Summarize the given text.' },
-				  { role: 'user', content },
-				],
-				max_tokens: 100, 
-			  },
-			  {
-				headers: {
-				  'Authorization': `Bearer ${OPENAI_API_KEY}`,
-				  'Content-Type': 'application/json',
-				},
-			  }
-			);
-		
-			const summary = response.data.choices[0].message.content.trim();
-
-			await prisma.post.update({
-				where:{ id:id },
-				data:{ summary }
-			})
-			{console.log("from the saved side")}
-			return c.json({ summary });
-	} 
-	catch (error) {
-		console.error(error);
-		return c.json({ error: 'Internal server error' }, 500);
+			  role: 'system',
+			  content: 'Summarize the given blog post in around 100 words. End with a conclusive sentence.'
+			},
+			{
+			  role: 'user',
+			  content
+			}
+		  ],
+		  max_tokens: 150, // Approx. 100 words
+		},
+		{
+		  headers: {
+			'Authorization': `Bearer ${OPENAI_API_KEY}`,
+			'Content-Type': 'application/json',
+		  },
+		}
+	  );
+  
+	  const summary = response.data.choices[0].message.content.trim();
+  
+	  await prisma.post.update({
+		where: { id },
+		data: { summary }
+	  });
+  
+	  console.log("Saved generated summary");
+	  return c.json({ summary });
+	} catch (error) {
+	  console.error(error);
+	  return c.json({ error: 'Internal server error' }, 500);
 	}
-})
+  });
+  
 
 blogRouter.get("/tts/:id", async (c) => {
 	try {
