@@ -32,7 +32,8 @@ userRouter.post('/signup', async (c) => {
             data:{
                 email:body.email,
                 password:body.password,
-                name:body.name
+                name:body.name,
+                description:body.description
             }
         })
 
@@ -130,6 +131,47 @@ userRouter.get("/name" , async(c)=>{
     } catch (error) {
         return c.json({
             message:"username not found"
+        })
+    }
+})
+
+userRouter.get("/designation" , async(c)=>{
+
+    const prisma = new PrismaClient({
+		datasourceUrl: c.env.DATABASE_URL,
+	}).$extends(withAccelerate())
+
+    const header = c.req.header("Authorization") || " "
+    if(!header){
+        c.status(403);
+        return c.json({
+            message: "Authorization header is missing , no token found"
+        })
+    }
+
+    try {
+        const payload = await verify(header , c.env.JWT_SECRET) as {id:string}
+
+        if(!payload){
+            return c.json({
+                message:"Failed to verify token"
+            })
+        }
+        
+        const user = await prisma.user.findUnique({
+            where:{
+                id:payload.id
+            },
+            select:{
+                description :true
+            }
+        })
+
+        return c.json({ description: user?.description || "Anonymus" });
+
+    } catch (error) {
+        return c.json({
+            message:"designation not found"
         })
     }
 })

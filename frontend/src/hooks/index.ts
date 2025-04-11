@@ -97,3 +97,22 @@ export const useName = () =>{
         username
     }
 }
+
+export const useDesig = () =>{
+
+    const [designation , setDesignation] = useState("")
+
+    useEffect(()=>{
+        axios.get(`${BACKEND_URL}/api/v1/user/designation` , {
+            headers:{
+                Authorization : localStorage.getItem("token")
+            }
+        }).then(response =>{
+            setDesignation(response.data.description)
+        })
+    }, [])
+
+    return {
+        designation
+    }
+}
