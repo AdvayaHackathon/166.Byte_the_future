@@ -3,6 +3,8 @@ import { FullBlog } from "../components/FullBlog"
 import { useBlog, useSummary } from "../hooks"
 import { Spinner } from "../components/Spinner"
 
+
+
 export const Blog = () => {
     const { id } = useParams()
     const {loading , blog} = useBlog({
@@ -30,7 +32,7 @@ export const Blog = () => {
 
     return <div>
             <div>
-                <FullBlog blog={blog} summary={summary} />
+                <FullBlog blog={blog} summary={summary} />  
             </div>
         </div>
 }

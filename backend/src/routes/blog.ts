@@ -258,3 +258,56 @@ blogRouter.get('/summarize/:id' ,async (c)=>{
 		return c.json({ error: 'Internal server error' }, 500);
 	}
 })
+
+blogRouter.get("/tts/:id", async (c) => {
+	try {
+	  const id = c.req.param("id");
+	  const OPENAI_API_KEY = c.env.OPENAI_API_KEY;
+  
+	  const prisma = new PrismaClient({
+		datasourceUrl: c.env.DATABASE_URL,
+	  }).$extends(withAccelerate());
+  
+	  const post = await prisma.post.findUnique({
+		where: { id },
+		select: { content: true },
+	  });
+  
+	  if (!post || !post.content) {
+		return c.json({ message: "Post not found or empty" }, 404);
+	  }
+  
+	  const ttsResponse = await fetch("https://api.openai.com/v1/audio/speech", {
+		method: "POST",
+		headers: {
+		  Authorization: `Bearer ${OPENAI_API_KEY}`,
+		  "Content-Type": "application/json",
+		},
+		body: JSON.stringify({
+		  model: "tts-1", // or "tts-1-hd" if you want higher quality
+		  voice: "nova", // other options: alloy, echo, fable, onyx, shimmer
+		  input: post.content,
+		  response_format: "mp3",
+		}),
+	  });
+  
+	  if (!ttsResponse.ok) {
+		console.error("OpenAI TTS Error:", await ttsResponse.text());
+		return c.json({ message: "TTS generation failed" }, 500);
+	  }
+  
+	  const audioBuffer = await ttsResponse.arrayBuffer();
+  
+	  return new Response(audioBuffer, {
+		headers: {
+		  "Content-Type": "audio/mpeg",
+		  "Content-Disposition": `inline; filename="${id}.mp3"`,
+		  "Accept-Ranges": "bytes",
+		},
+	  });
+  
+	} catch (e) {
+	  console.error("TTS Error:", e);
+	  return c.json({ message: "Internal Server Error" }, 500);
+	}
+  });  

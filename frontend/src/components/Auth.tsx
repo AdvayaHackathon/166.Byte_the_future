@@ -9,7 +9,8 @@ export const Auth = ({type}: {type: 'signin' | 'signup'}) =>{
     const [postInputs , setPostInputs] = useState<SignupInput >({
         email:"",
         password:"",
-        name:""
+        name:"",
+        description :""
     })
 
     async function sendRequest() {
@@ -47,6 +48,14 @@ export const Auth = ({type}: {type: 'signin' | 'signup'}) =>{
                                     setPostInputs({
                                         ...postInputs,
                                         name: e.target.value,
+                                    })
+                                }} />
+                            )}
+                    {type === "signup" && (
+                                <LabbledInput label="honorifics" placeholder="Honorific (e.g., Dr., Ms.)" onChange={e => {
+                                    setPostInputs({
+                                        ...postInputs,
+                                        description : e.target.value,
                                     })
                                 }} />
                             )}
