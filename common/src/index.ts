@@ -3,8 +3,7 @@ import { z } from 'zod'
 export const signupzod = z.object({
     email : z.string().email(),
     password : z.string().min(5),
-    name :z.string(),
-    description :z.string().min(1)
+    name :z.string()
 })
 
 export type SignupInput = z.infer<typeof signupzod>
