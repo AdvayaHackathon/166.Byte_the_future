@@ -51,14 +51,6 @@ export const Auth = ({type}: {type: 'signin' | 'signup'}) =>{
                                     })
                                 }} />
                             )}
-                    {type === "signup" && (
-                                <LabbledInput label="honorifics" placeholder="Honorific (e.g., Dr., Ms.)" onChange={e => {
-                                    setPostInputs({
-                                        ...postInputs,
-                                        description : e.target.value,
-                                    })
-                                }} />
-                            )}
                     <LabbledInput label="Username" placeholder="Enter email" onChange={e=>{
                         setPostInputs({
                             ...postInputs,

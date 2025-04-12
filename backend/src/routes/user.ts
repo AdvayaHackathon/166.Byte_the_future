@@ -135,44 +135,5 @@ userRouter.get("/name" , async(c)=>{
     }
 })
 
-userRouter.get("/designation" , async(c)=>{
 
-    const prisma = new PrismaClient({
-		datasourceUrl: c.env.DATABASE_URL,
-	}).$extends(withAccelerate())
-
-    const header = c.req.header("Authorization") || " "
-    if(!header){
-        c.status(403);
-        return c.json({
-            message: "Authorization header is missing , no token found"
-        })
-    }
-
-    try {
-        const payload = await verify(header , c.env.JWT_SECRET) as {id:string}
-
-        if(!payload){
-            return c.json({
-                message:"Failed to verify token"
-            })
-        }
-        
-        const user = await prisma.user.findUnique({
-            where:{
-                id:payload.id
-            },
-            select:{
-                description :true
-            }
-        })
-
-        return c.json({ description: user?.description || "Anonymus" });
-
-    } catch (error) {
-        return c.json({
-            message:"designation not found"
-        })
-    }
-})
 

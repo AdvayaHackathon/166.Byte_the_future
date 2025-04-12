@@ -20,7 +20,7 @@ export const AppBar = () => {
                     Edu Bridge
                 </Link>
             </div>
-            <div className="relative">
+            <div className="relative ">
                 <Link to={'/publish'}>
                     <button
                         type="button"

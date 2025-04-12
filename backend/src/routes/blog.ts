@@ -314,3 +314,43 @@ blogRouter.get("/tts/:id", async (c) => {
 	  return c.json({ message: "Internal Server Error" }, 500);
 	}
   });  
+
+  blogRouter.get("/by-title/:title", async (c) => {
+    try {
+        const title = c.req.param("title");  // Get the title from the URL parameter
+        const prisma = new PrismaClient({
+            datasourceUrl: c.env.DATABASE_URL,
+        }).$extends(withAccelerate());
+
+        // Query the posts based on the title
+        const posts = await prisma.post.findMany({
+            where: {
+                title: {
+                    contains: title,  // Match posts with titles that contain the search term
+                    mode: "insensitive",  // Case-insensitive search
+                },
+            },
+            select: {
+                id: true,
+                title: true,
+                summary: true,
+                publishedDate: true,
+                published: true,
+            },
+            orderBy: {
+                publishedDate: "desc",  // Order the results by published date in descending order
+            },
+        });
+
+        console.log("Searching posts with title:", title);
+
+        if (posts.length === 0) {
+            return c.json({ message: "No posts found with the given title" }, 404);
+        }
+
+        return c.json({ posts });
+    } catch (error) {
+        console.error("Search error:", error);
+        return c.json({ error: "Internal server error" }, 500);
+    }
+});

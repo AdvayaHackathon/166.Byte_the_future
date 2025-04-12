@@ -1,15 +1,13 @@
 import { useRef, useState } from 'react';
 import { Blog } from "../hooks";
-import { AppBar } from "./AppBar";
+import { AppBar } from "./AppBar";  
 import { AuthorImage } from "./BlogCards";
 import { BACKEND_URL } from "../config";
-import { useDesig } from "../hooks/index"
 
 export const FullBlog = ({ blog, summary }: { blog: Blog; summary: string }) => {
     const [showSummary, setShowSummary] = useState(false);
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [isLoadingTTS, setIsLoadingTTS] = useState(false);
-    const { designation } = useDesig();
 
     const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -81,7 +79,8 @@ export const FullBlog = ({ blog, summary }: { blog: Blog; summary: string }) => 
                         </div>
                         <div>
                             <div className="font-bold text-2xl">{blog.author.name || "Anonymous"}</div>
-                            <div className="text-slate-500">{designation}</div>
+                            <div className="text-slate-500">"Learning is the key to growth."
+                        </div>
                         </div>
                     </div>
 
