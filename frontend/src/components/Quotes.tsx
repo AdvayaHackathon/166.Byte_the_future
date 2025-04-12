@@ -3,7 +3,7 @@ export const Quotes = () =>{
        <div className="flex justify-center ">
         <div className="max-w-lg">
             <div className="text-3xl font-bold">
-            "Where teachers level up with tech and share what matters."
+            "The Git Hub Of Notes"
             </div>
         </div>
        </div>
